@@ -7,33 +7,33 @@ package accesobd;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 import modeloDatos.*;
 
 /**
- *
+ * DAO
  * @author mamiko
  */
 public class GestorBD extends ConexionBD{
     
-    private Statement sentencia,sentencia2;
+    private Statement sentencia;
     private PreparedStatement sentenciaP;
-    private ResultSet cursor,cursor2;
+    private ResultSet cursor;
 
     public GestorBD(String tipo,String nombreBD,String usuario,String clave) {
         super(tipo,nombreBD,usuario,clave);
     
     }
-    
+
     public ArrayList<Paciente> obtenerPaciente(){
         ArrayList<Paciente> pacientes = new ArrayList<>();
         String sql = "Select * from PACIENTE";
         try{
-            this.sentencia = this.conexion.createStatement();
-            cursor = this.sentencia.executeQuery(sql);
+            this.sentenciaP = this.conexion.prepareStatement(sql);
+            cursor = this.sentenciaP.executeQuery();
             
             while(cursor.next()){
-                Paciente p = new Paciente(cursor.getString(1));
+                Paciente p = new Paciente();
+                p.setDni(cursor.getString(1));
                 p.setNombre(cursor.getString(2));
                 p.setTel(cursor.getString(3));
                 pacientes.add(p);
@@ -51,10 +51,15 @@ public class GestorBD extends ConexionBD{
             this.sentencia = this.conexion.createStatement();
             cursor = this.sentencia.executeQuery(sql);
             
+            int seq = 1;  //シーケンス番号
             while(cursor.next()){
-                Medico m = new Medico(cursor.getString(1));
+                Medico m = new Medico();
+                m.setSecuencia(seq);
+                m.setNombre(cursor.getString(1));
                 m.setEsp(cursor.getString(2));
+
                 medicos.add(m);
+                seq++;
             }
         }catch(SQLException ex){
             System.out.println("Error");

@@ -1,25 +1,10 @@
 package modeloDatos;
 
-import java.util.List;
-
 public class Paciente implements Comparable<Paciente> {
-    
-    private List<Cita> citas;   //患者は複数の予約をもつ
     
     private String dni;
     private String nombre;
     private String tel;
-
-    public Paciente(String dni, String nombre, String tel) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.tel = tel;
-    }
-
-    public Paciente(String dni) {
-        this.dni = dni;
-    }
-
     
     @Override
     public String toString(){
@@ -43,8 +28,6 @@ public class Paciente implements Comparable<Paciente> {
     public int compareTo(Paciente t) {
         return this.nombre.compareToIgnoreCase(t.getNombre());
     }
-    
-    
     
     
     public String getDni() {
